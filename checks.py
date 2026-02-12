@@ -1,5 +1,6 @@
 from reader import load_file
 from config import sensitive_ports,large_packet
+from analyzer import count_requests
 
 # check_external_ip
 def external_ip(data): # 'f' = file with list of lists
