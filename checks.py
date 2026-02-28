@@ -24,5 +24,15 @@ def night_activity(data):
     night_packets = filter(lambda line: "00"<= (get_time(line)[1].split(":")[0])<"06" , data)
     return list(night_packets)
 
+def dict_suspicion_checks(data):
+    suspicion_checks = {
+        "EXTERNAL_IP": lambda row: row[1].startswith("192.168") and not row[1].startswith("10."),
+        "NIGHT_ACTIVITY": lambda row: "00"<=row[0].strip().split()[1].split(":")[0]<"06",
+        "SENSITIVE_PORT": lambda row: row[3] in sensitive_ports,
+        "LARGE PACKET": lambda row: row[5]>large_packet
+    }
+    return suspicion_checks
+
+
 
 
