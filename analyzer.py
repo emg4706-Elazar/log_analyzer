@@ -40,3 +40,15 @@ def filter_suspicious_ips(data):
         if len(dicti_ips[ip]) >= 2:
             dicti_after[ip] = dicti_ips[ip]
     return dicti_after
+
+# returns in list only hours' digits as str
+def get_hour(data):
+    lst = list(map(lambda line: (line[0].strip().split())[1].split(":")[0],data))
+    dicti = {"timestamps" : lst}
+    return dicti
+
+# returns dict with size packet converted KByte
+def convert_size_as_kb(data):
+    lst = list(map(lambda line: round(int(line[-1])/1024,2) ,data))
+    dicti = {"KB" : lst}
+    return dicti

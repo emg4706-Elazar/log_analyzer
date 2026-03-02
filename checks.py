@@ -24,5 +24,25 @@ def night_activity(data):
     night_packets = filter(lambda line: "00"<= (get_time(line)[1].split(":")[0])<"06" , data)
     return list(night_packets)
 
+suspicion_checks = {
+    "EXTERNAL_IP": lambda row: not row[1].startswith("192.168") and not row[1].startswith("10."),
+    "NIGHT_ACTIVITY": lambda row: "00"<=row[0].strip().split()[1].split(":")[0]<"06",
+    "SENSITIVE_PORT": lambda row: row[3] in sensitive_ports,
+    "LARGE PACKET": lambda row: int(row[5])>large_packet
+    }
+
+def flag_suspicious_row(row, checks: dict):
+    lst = list(filter(lambda sus: checks[sus](row),checks))
+    return lst
+
+
+file_as_lists = load_file("network_traffic.log")
+
+# process log , return iterator points on 'file_as_list' with flags
+processed_log1 = map(lambda row: flag_suspicious_row(row, suspicion_checks), file_as_lists)
+
+# filter log for getting log only with suspicious
+processed_log2 = list(filter(lambda row: row, processed_log1))
+
 
 
